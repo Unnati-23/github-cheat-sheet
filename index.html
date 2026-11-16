@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub Cheat Sheet</title>
+<meta name="description" content="A free GitHub cheat sheet for vibe coders: the exact Claude prompts for saving your progress, undoing a broken change, and testing a feature safely.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #D12E2E;
+    --red-dark: #B02424;
+    --cream: #FEF8E6;
+    --card: #FEF9E9;
+    --blush: #FBEADB;
+    --sage-bg: #F2EFDD;
+    --sage: #8A9A7B;
+    --ink: #2A2A2A;
+    --body: #3A3A3A;
+    --muted: #6B6B6B;
+    --rule: #E6E0CF;
+    --code-bg: #2A2A2A;
+    --display: "Anton", "Impact", "Arial Narrow", sans-serif;
+    --sans: "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 130px; }
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--body);
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--red); }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 640px) { .wrap { padding: 0 48px; } }
+
+  /* ---------- Header ---------- */
+  header.site {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--cream);
+    border-bottom: 2px solid var(--rule);
+    text-align: center;
+    padding: 22px 16px 18px;
+  }
+  .brand {
+    font-family: var(--display);
+    color: var(--red);
+    font-size: clamp(24px, 6vw, 34px);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+    line-height: 1.1;
+  }
+  nav.top { margin-top: 12px; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 28px; }
+  nav.top a {
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+  }
+  nav.top a:hover, nav.top a.active { color: var(--ink); }
+  @media (max-width: 480px) {
+    nav.top { gap: 6px 16px; }
+    nav.top a { font-size: 13.5px; letter-spacing: 0.02em; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero { background: var(--red); color: var(--cream); padding: 64px 0 72px; }
+  .byline { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; font-size: 17px; opacity: .92; }
+  .byline strong { font-weight: 400; }
+  .tag {
+    display: inline-block;
+    background: var(--cream);
+    color: var(--red);
+    font-family: var(--display);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 15px;
+    padding: 8px 16px 7px;
+    margin: 28px 0 22px;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    text-transform: uppercase;
+    font-size: clamp(44px, 11vw, 76px);
+    line-height: 0.98;
+    margin: 0 0 28px;
+    letter-spacing: 0.005em;
+  }
+  .hero p.lede { font-size: clamp(19px, 3.6vw, 22px); line-height: 1.6; margin: 0; max-width: 40em; }
+
+  /* ---------- Callouts (blush "Source" + sage "Why it works") ---------- */
+  .callouts { padding: 48px 0 56px; }
+  .callout { padding: 22px 26px; margin: 0 0 28px; border-left: 6px solid var(--red); background: var(--blush); }
+  .callout:last-child { margin-bottom: 0; }
+  .callout p { margin: 0; }
+  .callout.sage { background: var(--sage-bg); border-left-color: var(--sage); }
+  .eyebrow {
+    font-family: var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 15px;
+    color: var(--red);
+    margin: 0 0 10px;
+    display: block;
+  }
+  .callout.sage .eyebrow { color: var(--sage); }
+
+  /* ---------- Red band with cream cards ---------- */
+  .band { background: var(--red); padding: 56px 0; }
+  .card { background: var(--card); padding: 36px 24px 40px; margin: 0 0 36px; }
+  .card:last-child { margin-bottom: 0; }
+  @media (min-width: 640px) { .card { padding: 44px 48px 48px; } }
+  .card h2 {
+    font-family: var(--display);
+    font-weight: 400;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-size: clamp(30px, 7vw, 44px);
+    line-height: 1.04;
+    margin: 0 0 18px;
+  }
+  .card h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    font-size: 21px;
+    margin: 30px 0 8px;
+  }
+  .card > p { margin: 0 0 14px; }
+  .card .step-num { color: var(--red); }
+
+  /* ---------- Glossary ---------- */
+  .terms { display: grid; gap: 14px; margin: 24px 0 0; padding: 0; list-style: none; }
+  @media (min-width: 640px) { .terms { grid-template-columns: 1fr 1fr; } }
+  .terms li { border-top: 3px solid var(--red); padding: 12px 0 0; }
+  .terms b {
+    font-family: var(--display); font-weight: 400; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--ink); font-size: 20px; display: block;
+  }
+  .terms span { font-size: 16px; line-height: 1.55; display: block; }
+
+  /* ---------- Prompts (copy-paste boxes) ---------- */
+  .prompt {
+    position: relative;
+    background: var(--cream);
+    border: 2px solid var(--ink);
+    padding: 16px 18px 16px 18px;
+    margin: 12px 0 0;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .prompt .label {
+    display: block;
+    font-family: var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 12px;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+  .prompt q { quotes: none; display: block; padding-right: 0; }
+  .copy {
+    margin-top: 12px;
+    font-family: var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 13px;
+    background: var(--red);
+    color: var(--cream);
+    border: 0;
+    padding: 8px 14px 7px;
+    cursor: pointer;
+  }
+  .copy:hover { background: var(--red-dark); }
+  .copy.done { background: var(--sage); }
+  .note { font-size: 15px; color: var(--muted); margin: 10px 0 0; line-height: 1.55; }
+
+  /* ---------- Button (same as screenshot CTA buttons) ---------- */
+  .btn {
+    display: inline-block;
+    background: var(--red);
+    color: var(--cream);
+    font-family: var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: clamp(17px, 4vw, 21px);
+    text-decoration: none;
+    padding: 18px 28px 16px;
+    margin-top: 10px;
+  }
+  .btn:hover { background: var(--red-dark); }
+
+  /* ---------- Cheat table ---------- */
+  .cheat { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 16px; }
+  .cheat th, .cheat td { text-align: left; vertical-align: top; padding: 12px 10px 12px 0; border-bottom: 1px solid var(--rule); }
+  .cheat th {
+    font-family: var(--display); font-weight: 400; text-transform: uppercase;
+    letter-spacing: 0.1em; font-size: 14px; color: var(--red); border-bottom: 3px solid var(--red);
+  }
+  .cheat td:first-child { font-weight: 600; color: var(--ink); width: 38%; }
+  @media (max-width: 520px) {
+    .cheat thead { display: none; }
+    .cheat tr { display: block; border-bottom: 1px solid var(--rule); padding: 10px 0; }
+    .cheat td { display: block; border: 0; padding: 2px 0; width: auto !important; }
+  }
+
+  footer { text-align: center; color: var(--muted); padding: 48px 16px 56px; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <a class="brand" href="#top">Vibe Coding Essentials</a>
+  <nav class="top" aria-label="Sections">
+    <a href="#basics">The Basics</a>
+    <a href="#save">Save</a>
+    <a href="#undo">Undo</a>
+    <a href="#test">Test Safely</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="byline">A free guide by <strong>Unnati</strong></div>
+      <span class="tag">Git + GitHub</span>
+      <h1>The GitHub Cheat Sheet for Vibe Coders</h1>
+      <p class="lede">Version control has been around for over 50 years, but if you learned to build with AI, chances are nobody ever showed you how it works. This is the whole thing on one page, with the exact Claude prompts for saving your progress, undoing a broken change, and testing a feature safely.</p>
+    </div>
+  </section>
+
+  <!-- ===== How to use + Why it works ===== -->
+  <section class="callouts">
+    <div class="wrap">
+      <div class="callout">
+        <p><strong>How to use this:</strong> every box with a <strong>Copy</strong> button is a prompt. Copy it, paste it into Claude, and Claude runs the Git commands for you. You don't need to memorise a single command.</p>
+      </div>
+      <div class="callout sage">
+        <span class="eyebrow">Why it works</span>
+        <p>GitHub runs on <strong>Git</strong>, a version control tool developers use to track changes. Git saves your project as a timeline of snapshots. GitHub keeps a copy of that timeline online. Claude already knows Git inside out, so you just tell it what you want in plain English and it handles the rest.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Red band ===== -->
+  <section class="band">
+    <div class="wrap">
+
+      <!-- The Basics -->
+      <article class="card" id="basics">
+        <span class="eyebrow">The basics</span>
+        <h2>Seven words that explain all of Git</h2>
+        <p>Everything in this guide comes down to these. Read them once and the prompts below will make sense.</p>
+        <ul class="terms">
+          <li><b>Commit</b><span>A snapshot of the files Git is tracking, linked to the snapshot before it. Commit by commit, that's your app's timeline.</span></li>
+          <li><b>Push</b><span>Uploads your commits to GitHub, so your history lives online. If your laptop dies, your project doesn't.</span></li>
+          <li><b>Clone</b><span>The other way around. Copies a project and its whole history from GitHub to your computer. It's how you grab AI tools from GitHub.</span></li>
+          <li><b>Branch</b><span>A second timeline that splits off from the first, so you can try a new feature without risking the version that works.</span></li>
+          <li><b>Merge</b><span>The feature worked? Merge the branch back into your main timeline.</span></li>
+          <li><b>Delete a branch</b><span>The feature didn't work? Delete the branch. Your main version never knew it happened.</span></li>
+          <li><b>Tag</b><span>A name like <em>v1</em> stuck on one exact commit, so you can find that version any time.</span></li>
+        </ul>
+      </article>
+
+      <!-- One-time setup -->
+      <article class="card" id="setup">
+        <span class="eyebrow">Do this once</span>
+        <h2>Set up Git and GitHub</h2>
+        <p>You need a free account at <a href="https://github.com/signup" target="_blank" rel="noopener">github.com</a>. Then open your project in Claude Code and paste this:</p>
+        <div class="prompt">
+          <span class="label">Prompt</span>
+          <q>Check if Git and the GitHub CLI are installed on my computer, and install them if they're not. Then walk me through logging in to GitHub. I'll do the login step myself.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+        <div class="prompt">
+          <span class="label">Prompt</span>
+          <q>Turn this project into a Git repository, make the first commit, then create a new private repo on my GitHub and push it there.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+        <p class="note">Private means only you can see it. Say "public" instead if you want to share the code.</p>
+      </article>
+
+      <!-- CTA 1: Save -->
+      <article class="card" id="save">
+        <span class="eyebrow">1 · Save your progress</span>
+        <h2>Commit and push. Every time something works.</h2>
+        <p>If you remember one thing from this guide, make it this. Every time your app is in a good state, save it to your timeline <em>and</em> back it up online.</p>
+        <div class="prompt">
+          <span class="label">The one you'll use most</span>
+          <q>Commit and push.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+        <div class="prompt">
+          <span class="label">With a clear message</span>
+          <q>Commit everything with a clear message describing what changed, then push to GitHub.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+        <div class="prompt">
+          <span class="label">See your timeline</span>
+          <q>Show me my last 10 commits in plain English: when each one was made and what it changed.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+        <div class="prompt">
+          <span class="label">Make it automatic</span>
+          <q>From now on in this project, commit and push every time a feature is working, with a short clear message. Add this rule to my CLAUDE.md file.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+        <p class="note">A commit only lives on your laptop. A push puts it on GitHub. You want both.</p>
+      </article>
+
+      <!-- CTA 2: Undo -->
+      <article class="card" id="undo">
+        <span class="eyebrow">2 · Undo a broken change</span>
+        <h2>One prompt broke your app? Go back.</h2>
+        <p>This is why you commit. When something breaks, you don't have to fix it. You can rewind to the last commit that worked.</p>
+
+        <h3><span class="step-num">Step 1.</span> Find the last good version</h3>
+        <div class="prompt">
+          <span class="label">Prompt</span>
+          <q>My app just broke. Show me my recent commits and help me figure out which one was the last version that worked.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+
+        <h3><span class="step-num">Step 2.</span> Go back to it</h3>
+        <div class="prompt">
+          <span class="label">The safe rewind</span>
+          <q>Take me back to the last commit that worked. Do it safely by making a new commit that undoes the broken changes, so nothing is lost from my history. Then push.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+
+        <h3>Other undo prompts</h3>
+        <div class="prompt">
+          <span class="label">Broke it, haven't committed yet</span>
+          <q>Throw away all the changes I've made since my last commit. First show me exactly which files will be reset and wait for me to say yes.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+        <div class="prompt">
+          <span class="label">Undo just the last commit</span>
+          <q>Undo my last commit safely with a new commit that reverses it, then push.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+        <div class="prompt">
+          <span class="label">Just look, don't change anything</span>
+          <q>Let me look at how my app was at commit [paste commit or describe it] without changing anything. Then bring me back to the latest version.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+        <p class="note">Notice the word "safely". It tells Claude to undo with a new commit (a "revert") instead of deleting history. You can always undo the undo.</p>
+      </article>
+
+      <!-- CTA 3: Test safely -->
+      <article class="card" id="test">
+        <span class="eyebrow">3 · Test a feature safely</span>
+        <h2>Make a branch. Merge it or delete it.</h2>
+        <p>Want to try a new feature without risking the version that works? Split off a second timeline. Your working app stays untouched until you decide.</p>
+
+        <h3><span class="step-num">Step 1.</span> Split off a new timeline</h3>
+        <div class="prompt">
+          <span class="label">Prompt</span>
+          <q>Commit my current work, then create a new branch called [feature-name] and switch to it. Build the feature on this branch only.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+
+        <h3><span class="step-num">Step 2a.</span> It worked? Merge it in</h3>
+        <div class="prompt">
+          <span class="label">Prompt</span>
+          <q>The feature works. Commit it, merge this branch into main, push to GitHub, then delete the feature branch.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+
+        <h3><span class="step-num">Step 2b.</span> It didn't work? Delete it</h3>
+        <div class="prompt">
+          <span class="label">Prompt</span>
+          <q>This feature didn't work out. Switch me back to main and delete the [feature-name] branch. Make sure main is exactly how it was before.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+
+        <div class="prompt">
+          <span class="label">Lost track?</span>
+          <q>Which branch am I on right now, and what other branches do I have?</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+      </article>
+
+      <!-- Tags + Clone -->
+      <article class="card" id="tags">
+        <span class="eyebrow">Bonus · Tag and clone</span>
+        <h2>Bookmark a version. Grab a tool.</h2>
+
+        <h3>Tag a version you want to come back to</h3>
+        <div class="prompt">
+          <span class="label">Prompt</span>
+          <q>Tag the current commit as v1 and push the tag to GitHub.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+        <div class="prompt">
+          <span class="label">Prompt</span>
+          <q>Show me my app exactly as it was at v1, without changing anything. Then take me back to the latest version.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+
+        <h3>Clone an AI tool from GitHub</h3>
+        <div class="prompt">
+          <span class="label">Prompt</span>
+          <q>Clone this repo: [paste GitHub link]. Then read its README and tell me in plain English what it does and how to run it.</q>
+          <button class="copy" type="button">Copy</button>
+        </div>
+        <p class="note">Only clone and run code from people and projects you trust. Ask Claude to explain what a project does before you run it.</p>
+      </article>
+
+      <!-- Cheat table -->
+      <article class="card" id="cheat">
+        <span class="eyebrow">Screenshot this</span>
+        <h2>The whole guide in one table</h2>
+        <table class="cheat">
+          <thead><tr><th>When…</th><th>Tell Claude</th></tr></thead>
+          <tbody>
+            <tr><td>Something works</td><td>"Commit and push."</td></tr>
+            <tr><td>A prompt broke your app</td><td>"Take me back to the last commit that worked. Do it safely."</td></tr>
+            <tr><td>You want to try something risky</td><td>"Create a new branch called [name] and switch to it."</td></tr>
+            <tr><td>The feature worked</td><td>"Merge this branch into main and push."</td></tr>
+            <tr><td>The feature didn't work</td><td>"Switch back to main and delete the branch."</td></tr>
+            <tr><td>You hit a milestone</td><td>"Tag this commit as v1 and push the tag."</td></tr>
+            <tr><td>You found a tool on GitHub</td><td>"Clone [link] and tell me how to run it."</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- Closing CTA -->
+      <article class="card">
+        <span class="eyebrow">More vibe coding essentials</span>
+        <h2>New to building with AI? Start here.</h2>
+        <p>Tell Claude to commit and push. That one habit makes everything else on this page possible. Follow for more vibe coding essentials.</p>
+        <a class="btn" href="#top">Back to the top &rarr;</a>
+      </article>
+
+    </div>
+  </section>
+</main>
+
+<footer>&copy; 2026 Unnati. All rights reserved.</footer>
+
+<script>
+  // Copy-to-clipboard for every prompt box.
+  document.querySelectorAll('.prompt .copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.parentElement.querySelector('q').innerText.trim();
+      var done = function () {
+        btn.textContent = 'Copied ✓';
+        btn.classList.add('done');
+        setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('done'); }, 1600);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else { fallback(); }
+      function fallback() {
+        var ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+    });
+  });
+
+  // Highlight the nav link for the section in view.
+  var links = document.querySelectorAll('nav.top a');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        links.forEach(function (l) { l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id); });
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  ['basics', 'save', 'undo', 'test'].forEach(function (id) {
+    var el = document.getElementById(id); if (el) io.observe(el);
+  });
+</script>
+</body>
+</html>
