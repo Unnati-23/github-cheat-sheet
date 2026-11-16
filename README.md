@@ -28,4 +28,4 @@ Tell Claude: **"Commit and push."**
 
 ---
 
-Made by Unnati · Follow for more vibe coding essentials.
+Made by Unnati · Follow [@aiwithunnati on Instagram](https://www.instagram.com/aiwithunnati/) for more vibe coding essentials.
